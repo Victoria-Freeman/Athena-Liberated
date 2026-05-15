@@ -57,6 +57,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.TimeoutCancellationException
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -282,12 +284,19 @@ class RootConnectionService : Service(), CoroutineScope by CoroutineScope(Dispat
 
     private fun onStartIntent() {
         Logger.info("RootConnectionService: onStartIntent() called")
-        firewallManager.update(FirewallStatus.LOADING(0f))
         appChangeReceiver.register(this)
-        
-        launch { 
-            loadRules()
-            loadAndApplyDomains()
+
+        launch {
+            if (hasExistingFirewallRules()) {
+                Logger.info("RootConnectionService: Existing firewall rules detected, skipping rule initialization")
+                val apps = loadApplicationsForNotification()
+                showStartNotification(apps, preferencesUseCases)
+                firewallManager.update(FirewallStatus.ONLINE)
+            } else {
+                firewallManager.update(FirewallStatus.LOADING(0f))
+                loadRules()
+                loadAndApplyDomains()
+            }
         }
     }
     
@@ -315,6 +324,39 @@ class RootConnectionService : Service(), CoroutineScope by CoroutineScope(Dispat
         }
     }
 
+    private suspend fun hasExistingFirewallRules(): Boolean {
+        val shell = Shell("su")
+        var output = ""
+        shell.addOnStdoutLineListener(object : Shell.OnLineListener {
+            override fun onLine(line: String) {
+                output += line
+            }
+        })
+        shell.addOnStderrLineListener(object : Shell.OnLineListener {
+            override fun onLine(line: String) {
+                output += line
+            }
+        })
+        try {
+            withTimeout(3000) {
+                shell.run("iptables -L EasyApps -w | wc -l")
+            }
+            val lines = output.trim().toIntOrNull()
+            return lines != null && lines > 2
+        } catch (e: TimeoutCancellationException) {
+            return false
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
+    private suspend fun loadApplicationsForNotification(): List<Application> = withContext(Dispatchers.IO) {
+        packageManager.getApplications.execute().fold(
+            ifSuccess = { it },
+            ifFailure = { emptyList() }
+        )
+    }
+
     private fun onStopIntent() {
         val hostsManager = domains?.let { HostsManager(appContext, it) }
 
@@ -332,7 +374,8 @@ class RootConnectionService : Service(), CoroutineScope by CoroutineScope(Dispat
 
     override fun onDestroy() {
         super.onDestroy()
-        onStopIntent()
+        appChangeReceiver.unregister(this)
+        stopForeground(true)
     }
 
     inner class RootBinder : Binder() {

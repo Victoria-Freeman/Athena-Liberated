@@ -147,11 +147,7 @@ class FirewallManager @Inject constructor(
     }
 
     fun updateFirewallRules(application: Application?) {
-        if (isServiceBound) {
-            currentService.value?.updateRules(application) ?: Logger.warn("Cannot update rules: Service is not bound.")
-        } else {
-            Logger.warn("Cannot update rules: Service is not bound.")
-        }
+        currentService.value?.updateRules(application) ?: Logger.warn("Cannot update rules: Service not available.")
     }
 
     fun setFirewallMode(mode: FirewallMode) {

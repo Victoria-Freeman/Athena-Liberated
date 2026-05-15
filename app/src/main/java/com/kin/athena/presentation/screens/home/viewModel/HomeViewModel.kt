@@ -538,34 +538,29 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    fun checkIfCleanedUp() {
-        val shell = Shell("su")
+    fun checkIfCleanedUp(mode: FirewallMode = FirewallMode.VPN) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val shell = Shell("su")
+            var cleanedUp = false
 
-        shell.addOnStderrLineListener( object : Shell.OnLineListener {
-            override fun onLine(line: String) {
-                val lines = line.toIntOrNull()
-
-                lines?.let {
-                    if (lines !in 0..2) {
-                        setRootUncleaned(true)
+            val listener = object : Shell.OnLineListener {
+                override fun onLine(line: String) {
+                    val lines = line.toIntOrNull()
+                    if (lines != null && lines !in 0..2 && !cleanedUp) {
+                        cleanedUp = true
+                        firewallManager.setFirewallMode(mode)
+                        firewallManager.update(FirewallStatus.ONLINE)
+                        viewModelScope.launch {
+                            firewallManager.startFirewall()
+                        }
                     }
                 }
             }
-        })
 
-        shell.addOnStdoutLineListener( object : Shell.OnLineListener {
-            override fun onLine(line: String) {
-                val lines = line.toIntOrNull()
-
-                lines?.let {
-                    if (lines !in 0..2) {
-                        setRootUncleaned(true)
-                    }
-                }
-            }
-        })
-
-        shell.run("iptables -L EasyApps -w | wc -l")
+            shell.addOnStderrLineListener(listener)
+            shell.addOnStdoutLineListener(listener)
+            shell.run("iptables -L EasyApps -w | wc -l")
+        }
     }
 
     fun cleanRoot() {

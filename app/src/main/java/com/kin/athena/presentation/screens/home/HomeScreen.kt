@@ -273,7 +273,7 @@ fun HomeScreen(
         content = {
             if (isFirewallManager.value.name() == FirewallStatus.OFFLINE.name()) {
                 if (settingsViewModel.settings.value.useRootMode == true) {
-                    homeViewModel.checkIfCleanedUp()
+                    homeViewModel.checkIfCleanedUp(FirewallMode.ROOT)
                     if (homeViewModel.rootUncleaned.value) {
                         fun onClick() {
                             scope.launch {
