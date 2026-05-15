@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2025-2026 Vexzure
+ * Copyright (C) 2026 Victoria Freeman
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +18,6 @@
 package com.kin.athena.presentation.screens.settings.viewModel
 
 import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.os.LocaleListCompat
@@ -38,9 +37,7 @@ import com.kin.athena.service.utils.manager.FirewallManager
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
-import java.security.MessageDigest
 import javax.inject.Inject
-import java.security.NoSuchAlgorithmException
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -115,30 +112,6 @@ class SettingsViewModel @Inject constructor(
             } catch (e: Exception) {
                 Logger.error("Error updating settings: ${e.message}", e)
             }
-        }
-    }
-
-    fun getAppSignature(): String? {
-        return try {
-            val packageInfo: PackageInfo = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)
-            val signatures = packageInfo.signatures
-
-            if (signatures != null) {
-                for (signature in signatures) {
-                    val cert = signature.toByteArray()
-                    val md = MessageDigest.getInstance("SHA-256")
-                    val digest = md.digest(cert)
-                    val hexString = digest.joinToString("") { "%02x".format(it) }
-                    return hexString
-                }
-            }
-        null
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-            null
-        } catch (e: NoSuchAlgorithmException) {
-            e.printStackTrace()
-            null
         }
     }
 

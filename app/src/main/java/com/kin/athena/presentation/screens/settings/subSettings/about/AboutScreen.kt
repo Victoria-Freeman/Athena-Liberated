@@ -40,7 +40,6 @@ import com.kin.athena.presentation.screens.settings.components.SettingsBox
 import com.kin.athena.presentation.screens.settings.components.SettingsScaffold
 import com.kin.athena.presentation.screens.settings.components.settingsContainer
 import com.kin.athena.presentation.screens.settings.subSettings.about.components.LogoWithBlob
-import com.kin.athena.presentation.screens.settings.subSettings.about.components.SettingsVerification
 import com.kin.athena.presentation.screens.settings.viewModel.SettingsViewModel
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.material.icons.rounded.Gavel
@@ -61,13 +60,6 @@ fun AboutScreen(
             LogoWithBlob {
                 navController.safeNavigate(HomeRoutes.Debug.route)
             }
-        }
-        item {
-            SettingsVerification(
-                isValid = settings.getAppSignature() in ProjectConstants.SHA_256_SIGNING,
-                title = stringResource(id = R.string.about_verified_build),
-                description = stringResource(id = R.string.about_maintained_by) + " " + ProjectConstants.DEVELOPER
-            )
         }
         settingsContainer {
             SettingsBox(
