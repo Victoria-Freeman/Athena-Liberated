@@ -23,6 +23,10 @@
 - 🧭 Packet Tracing
 
 
+## 🙏 Credits
+
+This project is a fork of [Kin69/Athena](https://github.com/Kin69/Athena), the original firewall app by Vexzure. All credit for the base application goes to the original author.
+
 ## ⚠️ License
     Athena Liberated
 
