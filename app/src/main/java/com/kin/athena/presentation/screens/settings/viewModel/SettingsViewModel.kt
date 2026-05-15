@@ -19,7 +19,6 @@ package com.kin.athena.presentation.screens.settings.viewModel
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.os.LocaleListCompat
@@ -28,8 +27,6 @@ import androidx.lifecycle.viewModelScope
 import com.kin.athena.BuildConfig
 import com.kin.athena.R
 import com.kin.athena.core.logging.Logger
-import com.kin.athena.data.remote.VerifyLicenseUseCase
-import com.kin.athena.data.service.billing.BillingProvider
 import com.kin.athena.domain.model.Settings
 import com.kin.athena.domain.usecase.preferences.PreferencesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,19 +42,10 @@ import java.security.MessageDigest
 import javax.inject.Inject
 import java.security.NoSuchAlgorithmException
 
-data class FeatureChoice(
-    val featureName: String,
-    val featureDescription: String,
-    val productId: String,
-    val onSuccess: () -> Unit
-)
-
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val preferenceUseCases: PreferencesUseCases,
-    private val verifyLicenseUseCase: VerifyLicenseUseCase,
-    private val billingProvider: BillingProvider,
     private val firewallManager: FirewallManager
 ) : ViewModel() {
 
@@ -65,127 +53,15 @@ class SettingsViewModel @Inject constructor(
     val settings: State<Settings> = _settings
 
     var defaultRoute: String? = null
-    
-    // Premium feature choice dialog state
-    private val _showFeatureChoiceDialog = mutableStateOf(false)
-    val showFeatureChoiceDialog: State<Boolean> = _showFeatureChoiceDialog
-    
-    private val _currentFeatureChoice = mutableStateOf<FeatureChoice?>(null)
-    val currentFeatureChoice: State<FeatureChoice?> = _currentFeatureChoice
+
     val version: String = BuildConfig.VERSION_NAME
     val build: String = BuildConfig.BUILD_TYPE
     
-    // Callback for when app filtering settings change
     var onAppFilteringSettingsChanged: (() -> Unit)? = null
 
     init {
         runBlocking {
             loadSettings()
-        }
-    }
-
-    fun verifyLicense(key: String, onResult: (Boolean, String) -> Unit = { _, _ -> }) {
-        viewModelScope.launch {
-            verifyLicenseUseCase.invoke(key).fold(
-                ifSuccess = { licenseResponse ->
-                    if (licenseResponse.valid == true) {
-                        update(settings.value.copy(premiumUnlocked = true))
-                        Toast.makeText(context, context.getString(R.string.premium_activation_success), Toast.LENGTH_LONG).show()
-                        onResult(true, "✅ ${context.getString(R.string.premium_activation_success)}")
-                    } else {
-                        val errorMessage = licenseResponse.error ?: context.getString(R.string.premium_invalid_license)
-                        Toast.makeText(context, context.getString(R.string.premium_activation_error, errorMessage), Toast.LENGTH_LONG).show()
-                        onResult(false, context.getString(R.string.premium_activation_error, errorMessage))
-                    }
-                },
-                ifFailure = { error ->
-                    val errorMessage = "❌ Failed to verify license: ${error.message}"
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
-                    onResult(false, errorMessage)
-                }
-            )
-        }
-    }
-
-    fun startBilling(item: String, onSuccess: () -> Unit) {
-        if (settings.value.premiumUnlocked) {
-            Logger.info("Premium already unlocked, calling onSuccess")
-            onSuccess()
-        } else {
-            billingProvider.getBillingInterface()?.showPurchaseDialog(item, onSuccess)
-                ?: Logger.error("BillingInterface not available - activity not set")
-        }
-    }
-
-    fun getProductPrice(productId: String): String? {
-        return billingProvider.getBillingInterface()?.getProductPrice(productId)
-    }
-
-    fun calculateOriginalPrice(currentPrice: String?): String? {
-        if (currentPrice == null) return null
-        // Extract numeric value from price string (e.g., "$4.99" -> 4.99)
-        val numericPrice = currentPrice.replace(Regex("[^\\d.]"), "").toDoubleOrNull()
-        return if (numericPrice != null) {
-            val originalPrice = numericPrice * 1.2 // 20% higher
-            val currencySymbol = currentPrice.replace(Regex("[\\d.]"), "")
-            String.format("%.2f", originalPrice).let { 
-                currencySymbol + it
-            }
-        } else currentPrice
-    }
-
-    fun showFeatureChoiceDialog(
-        featureName: String,
-        featureDescription: String,
-        productId: String,
-        onSuccess: () -> Unit
-    ) {
-        // Check if already unlocked before showing dialog
-        if (settings.value.premiumUnlocked) {
-            Logger.info("Premium already unlocked, executing onSuccess without showing dialog")
-            onSuccess()
-            return
-        }
-
-        // Check if this specific product is already owned
-        val isOwned = billingProvider.getBillingInterface()?.isProductOwned(productId) ?: false
-        if (isOwned) {
-            Logger.info("Product $productId already owned, executing onSuccess without showing dialog")
-            onSuccess()
-            return
-        }
-
-        println("DEBUG: SettingsViewModel(${this.hashCode()}) - Setting dialog state to true")
-        _currentFeatureChoice.value = FeatureChoice(
-            featureName = featureName,
-            featureDescription = featureDescription,
-            productId = productId,
-            onSuccess = onSuccess
-        )
-        _showFeatureChoiceDialog.value = true
-        println("DEBUG: SettingsViewModel(${this.hashCode()}) - Dialog state is now: ${_showFeatureChoiceDialog.value}")
-    }
-
-    fun dismissFeatureChoiceDialog() {
-        _showFeatureChoiceDialog.value = false
-        _currentFeatureChoice.value = null
-    }
-
-    fun purchaseSingleFeature() {
-        currentFeatureChoice.value?.let { choice ->
-            startBilling(choice.productId, choice.onSuccess)
-            dismissFeatureChoiceDialog()
-        }
-    }
-
-    fun purchaseFullPremium() {
-        currentFeatureChoice.value?.let { choice ->
-            startBilling("all_features") {
-                choice.onSuccess()
-                // Also unlock premium globally
-                update(settings.value.copy(premiumUnlocked = true))
-            }
-            dismissFeatureChoiceDialog()
         }
     }
 
@@ -214,7 +90,6 @@ class SettingsViewModel @Inject constructor(
         val oldSettings = _settings.value
         _settings.value = newSettings.copy()
 
-        // Check if app filtering settings changed and trigger reload IMMEDIATELY
         if (oldSettings.showSystemPackages != newSettings.showSystemPackages ||
             oldSettings.showOfflinePackages != newSettings.showOfflinePackages) {
             Logger.info("SettingsViewModel: App filtering settings changed, triggering immediate app reload")
@@ -225,11 +100,9 @@ class SettingsViewModel @Inject constructor(
             try {
                 preferenceUseCases.saveSettings.execute(newSettings).fold(
                     ifSuccess = {
-                        // Check if blockPort80 setting changed
                         if (oldSettings.blockPort80 != newSettings.blockPort80) {
                             firewallManager.updateHttpSettings()
                         }
-
                         onSuccess?.invoke()
                     },
                     ifFailure = { error ->
@@ -237,15 +110,13 @@ class SettingsViewModel @Inject constructor(
                     }
                 )
             } catch (e: CancellationException) {
-                // Don't log cancellation as error - it's expected behavior
                 Logger.debug("Settings update cancelled")
-                throw e // Re-throw to properly cancel the coroutine
+                throw e
             } catch (e: Exception) {
                 Logger.error("Error updating settings: ${e.message}", e)
             }
         }
     }
-
 
     fun getAppSignature(): String? {
         return try {
@@ -283,7 +154,6 @@ class SettingsViewModel @Inject constructor(
         return map
     }
 
-    // Taken from: https://stackoverflow.com/questions/74114067/get-list-of-locales-from-locale-config-in-android-13
     private fun getLocaleListFromXml(context: Context): LocaleListCompat {
         val tagsList = mutableListOf<CharSequence>()
         try {
@@ -303,17 +173,5 @@ class SettingsViewModel @Inject constructor(
         }
 
         return LocaleListCompat.forLanguageTags(tagsList.joinToString(","))
-    }
-    
-    suspend fun isPremiumFeatureEnabled(featureKey: String): Boolean {
-        return settings.value.premiumUnlocked
-    }
-
-    suspend fun validatePremiumStatus(): Boolean {
-        return settings.value.premiumUnlocked
-    }
-
-    fun isProductOwned(productId: String): Boolean {
-        return billingProvider.getBillingInterface()?.isProductOwned(productId) ?: false
     }
 }

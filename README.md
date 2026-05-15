@@ -4,12 +4,12 @@
   <a href="https://easyapps.me" target="_blank">
     <picture>
       <source media="(max-width: 600px)" srcset="https://i.ibb.co/pvQtRqPP/athena-logo.png" width="120">
-      <img src="https://i.ibb.co/pvQtRqPP/athena-logo.png" width="160" alt="Athena logo">
+      <img src="https://i.ibb.co/pvQtRqPP/athena-logo.png" width="160" alt="Athena Liberated logo">
     </picture>
     <br><br>
     <picture>
       <source media="(max-width: 600px)" srcset="https://i.ibb.co/NgGwLH8P/athena-text.png" width="180">
-      <img src="https://i.ibb.co/NgGwLH8P/athena-text.png" width="250" alt="Athena text">
+      <img src="https://i.ibb.co/NgGwLH8P/athena-text.png" width="250" alt="Athena Liberated text">
     </picture>
   </a>
   <br><br>
@@ -46,29 +46,6 @@
     <img src="https://i.ibb.co/7N44hBpn/screenshot-4.png" width="22%" alt="feeds">
   </div>
   
-  ---
-
-  <!-- Translations + Premium + EasyApps as links -->
-  <div>
-    <a href="https://ko-fi.com/s/b127ca6671" target="_blank">
-      <picture>
-        <source media="(max-width: 600px)" srcset="https://i.ibb.co/35B5brqx/premium.png" width="30%">
-        <img src="https://i.ibb.co/35B5brqx/premium.png" width="160" alt="Premium">
-      </picture>
-    </a>
-    <a href="https://hosted.weblate.org/engage/athena/" target="_blank">
-      <picture>
-        <source media="(max-width: 600px)" srcset="https://i.ibb.co/zzhgVVQ/translations.png" width="30%">
-        <img src="https://i.ibb.co/zzhgVVQ/translations.png" width="160" alt="Translations">
-      </picture>
-    </a>
-    <a href="https://easyapps.me" target="_blank">
-      <picture>
-        <source media="(max-width: 600px)" srcset="https://i.ibb.co/RGWZTW1z/easyapps.png" width="30%">
-        <img src="https://i.ibb.co/RGWZTW1z/easyapps.png" width="160" alt="EasyApps">
-      </picture>
-    </a>
-  </div>
 </div>
 
 
@@ -83,26 +60,6 @@
 
 ---
 
-## 💬 **Contact Me**
-
-Feel free to reach out through any of the following channels:
-
-- 📧 **Email**: [contact@easyapps.me](mailto:contact@easyapps.me)
-- 📸 **Instagram**: [@easyapps.me](https://www.instagram.com/easyapps.me/)
-- 💬 **Discord**: [Easy Apps](https://discord.gg/ZrP4G8z23H)
-
-
----
-
-## 🌍 Translations
-
-
-<a href="https://hosted.weblate.org/engage/athena/">
-<img src="https://hosted.weblate.org/widget/athena/horizontal-auto.svg" alt="Translation status" />
-</a>
-
----
-
 ## 🔑 **Checksums**
 | Algorithm  | Play Store                                                       | Github                                                             |
 |------------|------------------------------------------------------------------|--------------------------------------------------------------------|
@@ -114,7 +71,7 @@ Feel free to reach out through any of the following channels:
 ---
 
 ## ⚠️ License
-    Athena
+    Athena Liberated
 
     Copyright (c)2025-2026-2026 Vexzure
     

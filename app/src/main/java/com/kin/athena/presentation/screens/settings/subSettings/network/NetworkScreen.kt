@@ -100,32 +100,17 @@ fun NetworkScreen(
             val speedMonitorDescription = stringResource(id = R.string.notification_network_speed_channel_desc)
             
             SettingsBox(
-                title = speedMonitorTitle + " " + stringResource(id = R.string.premium_feature_indicator),
+                title = speedMonitorTitle,
                 description = speedMonitorDescription,
                 icon = IconType.VectorIcon(Icons.Filled.NetworkCheck),
                 actionType = SettingType.SWITCH,
                 variable = settings.settings.value.networkSpeedMonitor,
                 onSwitchEnabled = { enabled ->
-                    if (!settings.settings.value.premiumUnlocked) {
-                        settings.showFeatureChoiceDialog(
-                            featureName = speedMonitorTitle,
-                            featureDescription = speedMonitorDescription,
-                            productId = "speed_notification"
-                        ) {
-                            settings.update(settings.settings.value.copy(networkSpeedMonitor = enabled))
-                            if (enabled) {
-                                NetworkSpeedManager.start(context)
-                            } else {
-                                NetworkSpeedManager.stop(context)
-                            }
-                        }
+                    settings.update(settings.settings.value.copy(networkSpeedMonitor = enabled))
+                    if (enabled) {
+                        NetworkSpeedManager.start(context)
                     } else {
-                        settings.update(settings.settings.value.copy(networkSpeedMonitor = enabled))
-                        if (enabled) {
-                            NetworkSpeedManager.start(context)
-                        } else {
-                            NetworkSpeedManager.stop(context)
-                        }
+                        NetworkSpeedManager.stop(context)
                     }
                 },
             )

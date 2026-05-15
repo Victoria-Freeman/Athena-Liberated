@@ -50,14 +50,14 @@ jobs:
       - name: Grant execution permission to Gradle Wrapper
         run: chmod +x gradlew
 
-      - name: Build F-Droid Release APK
-        run: ./gradlew assembleFdroidRelease
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
 
       - name: Sign app APK
         uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/apk/fdroid/release
+          releaseDirectory: app/build/outputs/apk/release/
           signingKeyBase64: ${{ secrets.KEY_BASE64 }}
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASS }}
@@ -66,7 +66,7 @@ jobs:
           BUILD_TOOLS_VERSION: "34.0.0"
 
       - name: Rename APK
-        run: mv app/build/outputs/apk/fdroid/release/app-fdroid-release-signed.apk Athena-nightly.apk
+        run: mv app/build/outputs/apk/release/app-release-signed.apk Athena-Liberated-nightly.apk
 
       - name: Extract nightly changelog
         run: |
@@ -81,13 +81,13 @@ jobs:
       - name: Upload the APK
         uses: actions/upload-artifact@v4.6.0
         with:
-          name: Athena-Nightly
-          path: Athena-nightly.apk
+          name: Athena-Liberated-Nightly
+          path: Athena-Liberated-nightly.apk
 
       - name: Update nightly release
         uses: eine/tip@master
         with:
          tag: Nightly
          token: ${{ secrets.TOKEN }}
-         files: Athena-nightly.apk
+          files: Athena-Liberated-nightly.apk
          body_path: nightly-changelog.txt

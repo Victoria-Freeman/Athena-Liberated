@@ -37,21 +37,7 @@ android {
         }
     }
 
-    flavorDimensions += "store"
-    productFlavors {
-        create("playstore") {
-            dimension = "store"
-            buildConfigField("boolean", "USE_PLAY_BILLING", "true")
-            buildConfigField("boolean", "CHECK_PREMIUM_CODE", "true")
-            buildConfigField("String", "KOFI_URL", "\"https://ko-fi.com/s/b127ca6671\"")
-        }
-        create("fdroid") {
-            dimension = "store"
-            buildConfigField("boolean", "USE_PLAY_BILLING", "false")
-            buildConfigField("boolean", "CHECK_PREMIUM_CODE", "true")
-            buildConfigField("String", "KOFI_URL", "\"https://ko-fi.com/s/b127ca6671\"")
-        }
-    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -71,11 +57,6 @@ android {
         }
     }
     
-    tasks.whenTaskAdded {
-        if (name.startsWith("merge") && name.contains("JniLibFolders")) {
-            dependsOn("buildGoLibraries")
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -189,10 +170,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.datastore.preferences)
 
-    // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.converter.scalars)
+    // OkHttp (for custom blocklist downloads)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     // Notification
     implementation(libs.androidx.core)
@@ -206,9 +185,6 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.dnsjava)
     implementation(libs.pcap4j.core)
-
-    //Billing (Play Store only)
-    "playstoreImplementation"(libs.billing)
 
     // Shizuku
     implementation(libs.shizuku.api)

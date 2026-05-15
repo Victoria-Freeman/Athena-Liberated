@@ -69,25 +69,14 @@ fun BehaviorScreen(
             val logsDescription = stringResource(id = R.string.behavior_logs_desc)
 
             SettingsBox(
-                title = logsTitle + " " + stringResource(id = R.string.premium_feature_indicator),
+                title = logsTitle,
                 description = logsDescription,
                 icon = IconType.VectorIcon(Icons.Rounded.Code),
                 actionType = SettingType.SWITCH,
                 variable = settings.settings.value.logs,
                 onSwitchEnabled = {
-                    if (!settings.settings.value.premiumUnlocked) {
-                        settings.showFeatureChoiceDialog(
-                            featureName = logsTitle,
-                            featureDescription = logsDescription,
-                            productId = "packet_logs"
-                        ) {
-                            settings.update(settings.settings.value.copy(logs = it))
-                            behaviorViewModel.updateLogs(it)
-                        }
-                    } else {
-                        settings.update(settings.settings.value.copy(logs = it))
-                        behaviorViewModel.updateLogs(it)
-                    }
+                    settings.update(settings.settings.value.copy(logs = it))
+                    behaviorViewModel.updateLogs(it)
                 }
             )
         }

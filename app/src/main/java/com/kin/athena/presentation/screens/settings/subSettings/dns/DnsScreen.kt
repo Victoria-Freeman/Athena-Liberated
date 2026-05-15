@@ -64,7 +64,6 @@ import com.kin.athena.presentation.screens.settings.components.CustomListDialog
 import com.kin.athena.presentation.screens.settings.components.SettingType
 import com.kin.athena.presentation.screens.settings.components.SettingsBox
 import com.kin.athena.presentation.screens.settings.components.SettingsScaffold
-import com.kin.athena.presentation.components.PremiumFeatureChoiceDialog
 import com.kin.athena.presentation.screens.settings.components.settingsContainer
 import com.kin.athena.presentation.navigation.routes.SettingRoutes
 import com.kin.athena.presentation.screens.settings.subSettings.dns.components.CustomBlocklistDialog
@@ -110,9 +109,6 @@ fun DnsScreen(
         }
     }
 
-    // Local dialog state for premium feature choice
-    var showPremiumDialog by remember { mutableStateOf(false) }
-    
     // Local state to track immediate switch changes for UI responsiveness
     val localSwitchStates = remember { mutableStateMapOf<String, Boolean>() }
     
@@ -590,18 +586,12 @@ fun DnsScreen(
             val customBlocklistDescription = stringResource(R.string.blocklist_custom_desc)
             
             SettingsBox(
-                title = customBlocklistTitle + " " + stringResource(id = R.string.premium_feature_indicator),
+                title = customBlocklistTitle,
                 description = customBlocklistDescription,
                 icon = IconType.VectorIcon(Icons.Rounded.Add),
                 actionType = SettingType.CUSTOM,
                 customAction = { onExit ->
-                    println("DEBUG: Custom action composable called")
-                    val isOwned = settings.isProductOwned("custom_blocklist")
-                    if (!settings.settings.value.premiumUnlocked && !isOwned) {
-                        showPremiumDialog = true
-                    } else {
-                        navController.navigate(SettingRoutes.CustomBlocklist.route)
-                    }
+                    navController.navigate(SettingRoutes.CustomBlocklist.route)
                     onExit()
                 },
             )
@@ -675,29 +665,6 @@ fun DnsScreen(
         }
     )
     
-    // Premium Feature Choice Dialog
-    if (showPremiumDialog) {
-        PremiumFeatureChoiceDialog(
-            featureName = "Custom Blocklist",
-            featureDescription = stringResource(R.string.blocklist_custom_desc),
-            singleFeaturePrice = settings.getProductPrice("custom_blocklist"),
-            fullPremiumPrice = settings.getProductPrice("all_features"),
-            onSingleFeaturePurchase = { 
-                settings.startBilling("custom_blocklist") {
-                    navController.navigate(SettingRoutes.CustomBlocklist.route)
-                }
-                showPremiumDialog = false
-            },
-            onFullPremiumPurchase = { 
-                settings.startBilling("all_features") {
-                    settings.update(settings.settings.value.copy(premiumUnlocked = true))
-                    navController.navigate(SettingRoutes.CustomBlocklist.route)
-                }
-                showPremiumDialog = false
-            },
-            onDismiss = { showPremiumDialog = false }
-        )
-    }
 }
 
 @Composable

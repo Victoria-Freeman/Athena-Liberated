@@ -83,7 +83,6 @@ data class Settings(
     val trackerProtection: Boolean = false,
     val autoUpdateEnabled: Boolean = true,
     val autoUpdateInterval: Long = 24 * 60 * 60 * 1000L,
-    val premiumUnlocked: Boolean = false,
 
     val dontShowHelp: Boolean = false
 )

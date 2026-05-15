@@ -1,4 +1,4 @@
-Athena Firewall combines powerful DNS-based ad blocking with complete network control. Block ads, trackers, and unwanted connections across all apps. Works with Root, Shizuku, or VPN mode - choose what fits your device.
+Athena Liberated Firewall combines powerful DNS-based ad blocking with complete network control. Block ads, trackers, and unwanted connections across all apps. Works with Root, Shizuku, or VPN mode - choose what fits your device.
 
 ✓ DNS ad & tracker blocking
 ✓ Custom & pre-made blocklists

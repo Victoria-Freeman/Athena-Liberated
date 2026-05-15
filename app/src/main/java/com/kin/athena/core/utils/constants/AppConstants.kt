@@ -72,7 +72,5 @@ object AppConstants {
         )
     }
 
-    object Links {
-        const val TRANSLATE = "https://hosted.weblate.org/projects/athena/"
-    }
+
 }
