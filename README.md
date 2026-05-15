@@ -1,14 +1,9 @@
 <div align="center">
 
-  <!-- Logo + Text as clickable link -->
+  <!-- App Icon -->
   <picture>
-    <source media="(max-width: 600px)" srcset="https://i.ibb.co/pvQtRqPP/athena-logo.png" width="120">
-    <img src="https://i.ibb.co/pvQtRqPP/athena-logo.png" width="160" alt="Athena Liberated logo">
-  </picture>
-  <br><br>
-  <picture>
-    <source media="(max-width: 600px)" srcset="https://i.ibb.co/NgGwLH8P/athena-text.png" width="180">
-    <img src="https://i.ibb.co/NgGwLH8P/athena-text.png" width="250" alt="Athena Liberated text">
+    <source media="(max-width: 600px)" srcset="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" width="120">
+    <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" width="160" alt="Athena Liberated icon">
   </picture>
   <br><br>
 
