@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2025-2026 Vexzure
+ * Copyright (C) 2026 Victoria Freeman
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,11 +148,7 @@ class FirewallManager @Inject constructor(
     }
 
     fun updateFirewallRules(application: Application?) {
-        if (isServiceBound) {
-            currentService.value?.updateRules(application) ?: Logger.warn("Cannot update rules: Service is not bound.")
-        } else {
-            Logger.warn("Cannot update rules: Service is not bound.")
-        }
+        currentService.value?.updateRules(application) ?: Logger.warn("Cannot update rules: Service not available.")
     }
 
     fun setFirewallMode(mode: FirewallMode) {

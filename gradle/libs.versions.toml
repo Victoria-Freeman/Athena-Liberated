@@ -1,7 +1,6 @@
 [versions]
 agp = "8.12.0-rc01"
 atomicfu = "0.29.0"
-billing = "8.0.0"
 biometric = "1.2.0-alpha05"
 datastorePreferences = "1.1.7"
 dnsjava = "3.6.3"
@@ -13,7 +12,6 @@ kotlin = "2.2.0"
 kotlinxSerializationJson = "1.9.0"
 ksp = "2.2.0-2.0.2"
 pcap4jCore = "1.8.2"
-retrofit = "3.0.0"
 shizuku-api = "13.1.5"
 shizuku-provider = "13.1.5"
 room = "2.7.2"
@@ -51,9 +49,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 
 #Hilt
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
-billing = { module = "com.android.billingclient:billing", version.ref = "billing" }
-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
+
 dnsjava = { module = "dnsjava:dnsjava", version.ref = "dnsjava" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidCompiler" }
 hilt-compile = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler"}
@@ -61,7 +57,6 @@ hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", ve
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 pcap4j-core = { module = "org.pcap4j:pcap4j-core", version.ref = "pcap4jCore" }
-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 shizuku-api = { module = "dev.rikka.shizuku:api", version.ref = "shizuku-api" }
 shizuku-provider = { module = "dev.rikka.shizuku:provider", version.ref = "shizuku-provider" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }

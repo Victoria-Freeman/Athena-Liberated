@@ -20,14 +20,7 @@
     @dagger.* <methods>;
 }
 -dontwarn dagger.internal.codegen.**
-# Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
- -keep,allowobfuscation,allowshrinking interface retrofit2.Call
- -keep,allowobfuscation,allowshrinking class retrofit2.Response
-
- # With R8 full mode generic signatures are stripped for classes that are not
- # kept. Suspend functions are wrapped in continuations where the type argument
- # is used.
- -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
  -keep class com.kin.athena.service.vpn.** { *; }
  -dontwarn java.nio.**
  -dontwarn java.nio.channels.**
@@ -47,15 +40,6 @@
 
 # Suppress kotlinx-serialization R8 warnings
 -dontwarn kotlinx.serialization.**
-
-# Keep license verification classes (prevent R8 from breaking premium code verification)
--keep class com.kin.athena.data.remote.LicenseResponse { *; }
--keep class com.kin.athena.data.remote.LicenseData { *; }
--keep class com.kin.athena.data.remote.ActivationData { *; }
--keep class com.kin.athena.data.remote.LicenseApi { *; }
--keep class com.kin.athena.data.remote.LicenseRepository { *; }
--keep class com.kin.athena.data.remote.LicenseRepositoryImpl { *; }
--keep class com.kin.athena.data.remote.VerifyLicenseUseCase { *; }
 
 # Room Database rules - prevent R8 from breaking database operations
 -keep class androidx.room.** { *; }

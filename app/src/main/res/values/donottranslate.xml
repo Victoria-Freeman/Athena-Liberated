@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="license_description">GNU General Public License v3.0</string>
-    <string name="visit_kofi">Get Premium €4.99</string>
-    <string name="premium_activation_error">❌ %1$s</string>
     <string name="blocklist_url_placeholder">https://example.com/blocklist.txt</string>
-    <string name="app_name">Athena</string>
+    <string name="app_name">Athena Liberated</string>
     <string name="details_uid">UID</string>
 
 </resources>

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2025-2026 Vexzure
+ * Copyright (C) 2026 Victoria Freeman
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,23 +47,13 @@ fun NotificationsScreen(
             val notificationDescription = stringResource(id = R.string.behavior_notify_install_desc)
             
             SettingsBox(
-                title = notificationTitle + " " + stringResource(id = R.string.premium_feature_indicator),
+                title = notificationTitle,
                 description = notificationDescription,
                 icon = IconType.VectorIcon(Icons.Rounded.InstallMobile),
                 actionType = SettingType.SWITCH,
                 variable = settings.settings.value.sendNotificationOnInstall,
                 onSwitchEnabled = {
-                    if (!settings.settings.value.premiumUnlocked) {
-                        settings.showFeatureChoiceDialog(
-                            featureName = notificationTitle,
-                            featureDescription = notificationDescription,
-                            productId = "notify_on_install"
-                        ) {
-                            settings.update(settings.settings.value.copy(sendNotificationOnInstall = it))
-                        }
-                    } else {
-                        settings.update(settings.settings.value.copy(sendNotificationOnInstall = it))
-                    }
+                    settings.update(settings.settings.value.copy(sendNotificationOnInstall = it))
                 }
             )
 

@@ -76,3 +76,9 @@ render.experimental.xml
 
 # Generated native libraries
 app/libs/
+
+# macOS
+.DS_Store
+
+# opencode
+.opencode/

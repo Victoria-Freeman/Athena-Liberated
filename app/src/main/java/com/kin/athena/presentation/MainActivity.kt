@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2025-2026 Vexzure
+ * Copyright (C) 2026 Victoria Freeman
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.kin.athena.presentation
 
@@ -22,7 +23,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -36,7 +36,6 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.kin.athena.core.logging.Logger
 import com.kin.athena.core.utils.extensions.popUpToTop
-import com.kin.athena.data.service.billing.BillingProvider
 import com.kin.athena.presentation.theme.EasyWallTheme
 import com.kin.athena.presentation.navigation.AppNavHost
 import com.kin.athena.presentation.navigation.routes.HomeRoutes
@@ -48,10 +47,7 @@ import com.kin.athena.presentation.screens.settings.subSettings.dns.hosts.Config
 import com.kin.athena.presentation.screens.settings.viewModel.SettingsViewModel
 import com.kin.athena.service.utils.manager.NetworkSpeedManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeoutOrNull
 import java.io.IOException
-import javax.inject.Inject
 
 
 var config = Configuration.load()
@@ -61,13 +57,9 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
     private var settings: SettingsViewModel? = null
     private lateinit var navController: NavHostController
-    
-    @Inject
-    lateinit var billingProvider: BillingProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        billingProvider.setActivity(this)
         installSplashScreen().apply {
             setKeepOnScreenCondition { !viewModel.isReady.value }
         }
@@ -105,37 +97,18 @@ class MainActivity : AppCompatActivity() {
             settings = hiltViewModel<SettingsViewModel>().apply {
                 val homeViewModel = hiltViewModel<HomeViewModel>()
 
-                // Check for existing purchases on startup with timeout
-                LaunchedEffect(Unit) {
-                    try {
-                        kotlinx.coroutines.withTimeoutOrNull(3000) {
-                            billingProvider.getBillingInterface()?.checkExistingPurchases {
-                                // User already owns premium, update settings
-                                if (!settings.value.premiumUnlocked) {
-                                    Logger.info("Restoring premium purchase from Play Store")
-                                    update(settings.value.copy(premiumUnlocked = true))
-                                }
-                            }
-                        } ?: Logger.warn("Billing check timed out after 3 seconds")
-                    } catch (e: Exception) {
-                        Logger.error("Failed to check existing purchases: ${e.message}", e)
-                    }
-                }
-
                 EasyWallTheme(this) {
                     val iconsColor = MaterialTheme.colorScheme.background
 
                     LaunchedEffect(homeViewModel) {
                         homeViewModel.initialize(this@apply)
                         
-                        // Start network speed monitor if enabled
                         if (settings.value.networkSpeedMonitor) {
                             NetworkSpeedManager.start(this@MainActivity)
                             Logger.info("Network speed monitor started on app startup")
                         }
                     }
                     
-                    // Watch for when apps are loaded and hide splash screen
                     LaunchedEffect(homeViewModel.applicationState.value) {
                         if (homeViewModel.applicationState.value is com.kin.athena.presentation.screens.home.viewModel.ApplicationListState.Success) {
                             viewModel.showSlashScreen(true)

@@ -20,6 +20,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Athena"
+rootProject.name = "Athena-Liberated"
 include(":app")
  
