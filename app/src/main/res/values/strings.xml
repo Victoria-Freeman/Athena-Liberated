@@ -34,15 +34,11 @@
     <string name="about_title">About</string>
     <string name="about_verified_build">Verified as official build!</string>
     <string name="about_maintained_by">Maintained by</string>
-    <string name="about_translator">Translator</string>
+    <string name="about_liberated_by">Liberated by</string>
     <string name="about_build_type">Build type</string>
     <string name="about_latest_release">Latest Release</string>
     <string name="about_source_code">Source Code</string>
-    <string name="about_email">Email</string>
-    <string name="about_discord">Discord</string>
-    <string name="about_instagram">Instagram - Fastest Support</string>
-    <string name="about_rate_app">Rate App</string>
-    <string name="about_your_name">Vexzure99</string>
+
     <string name="root_permission_description">Grant root access to manage network traffic using iptables. This allows the app to control which apps can access the internet</string>
     <string name="language_description">Change language</string>
     <string name="logs_search_packets">Filter (app, ip, domains)</string>
@@ -75,14 +71,6 @@
     <string name="download_error_message">Something went wrong while downloading rules</string>
     <string name="error_vpn_not_running">VPN is not running</string>
     <string name="error_dns_toggle_failed">Failed to toggle DNS blocking</string>
-    <string name="premium_code">Premium Code</string>
-    <string name="premium_invalid_license">Invalid License</string>
-    <string name="premium_purchase_title">Premium Features</string>
-    <string name="premium_activation_success">Premium activated successfully!</string>
-    <string name="premium_feature_indicator">(Premium)</string>
-    <string name="premium_unlock_feature">Unlock %s</string>
-    <string name="premium_just_feature">Just %s</string>
-    <string name="premium_unlock_only_feature">Unlock only this feature</string>
     <string name="behavior_notify_install">Notify on install</string>
     <string name="behavior_notify_install_desc">Show notification when apps are installed</string>
     <string name="behavior_use_root">Use Root</string>
@@ -146,9 +134,6 @@
     <string name="packet_dest_address">Destination Address</string>
     <string name="packet_dest_type">Destination Type</string>
     <string name="packet_time">Time</string>
-    <string name="settings_support_dev">20%% OFF - %s</string>
-    <string name="settings_all_premium">All Premium Features</string>
-    <string name="settings_fdroid_premium">Support development via Ko-fi to unlock all premium features!</string>
     <string name="settings_colors_option_theme">Theme</string>
     <string name="settings_behavior_option_system">System apps</string>
     <string name="settings_behavior_option_rules">Default rules</string>
@@ -160,15 +145,12 @@
     <string name="settings_dns_option_updates">Updates</string>
     <string name="settings_privacy_option_lock">lock</string>
     <string name="settings_privacy_option_hide">Hide screen</string>
-    <string name="settings_about_option_devs">Developers</string>
+
     <string name="settings_license">License</string>
     <string name="dialog_add_ip">Add IP</string>
     <string name="dialog_invalid_ip">Invalid IP address</string>
     <string name="dialog_copied">Copied to clipboard</string>
-    <string name="about_feature">Feature Request</string>
-    <string name="about_rate_desc">Rate us on the Play Store</string>
-    <string name="about_translate">Help Translate</string>
-    <string name="about_translate_desc">Contribute translations</string>
+
     <string name="debug_delete_iptables">Delete iptables chain</string>
     <string name="debug_remove_hosts">Remove all hosts</string>
     <string name="debug_clear_hosts_title">Clear hosts file</string>
@@ -308,13 +290,6 @@
     <string name="privacy_pattern">Pattern</string>
     <string name="privacy_authorize_pattern">Authorize with pattern</string>
     <string name="proxy_title">Proxy</string>
-    <string name="premium_feature_description">This feature unlocks only %s. Choose your preferred option:</string>
-    <string name="premium_kofi_description">This is a premium feature. Support development via Ko-fi to unlock %s and all other premium features!</string>
-    <string name="premium_lifetime">Lifetime Premium</string>
-    <string name="premium_kofi_support">Support via Ko-fi</string>
-    <string name="premium_app_notifications_feature">App Notifications</string>
-    <string name="premium_dns_lists_feature">DNS Lists</string>
-    <string name="premium_benefits">Premium Benefits</string>
     <string name="onboarding_tap_security">Tap the security icon to continue</string>
     <string name="notification_install_channel">Installation Notifications</string>
     <string name="notification_install_channel_desc">Notifications for app installations</string>

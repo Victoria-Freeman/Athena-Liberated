@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2025-2026 Vexzure
+ * Copyright (C) 2026 Victoria Freeman
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,28 +18,19 @@
 
 package com.kin.athena.presentation.screens.settings
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
 import com.kin.athena.R
-import com.kin.athena.core.utils.constants.AppConstants
-import com.kin.athena.core.utils.constants.ProjectConstants
 import com.kin.athena.core.utils.extensions.safeNavigate
-import com.kin.athena.presentation.screens.settings.components.SettingsScaffold
-import com.kin.athena.presentation.screens.settings.components.SectionBlock
-import com.kin.athena.presentation.screens.settings.components.SettingSection
 import com.kin.athena.presentation.navigation.routes.SettingRoutes
-import com.kin.athena.presentation.screens.home.viewModel.HomeViewModel
-import com.kin.athena.presentation.screens.settings.components.SettingBoxSmall
-import com.kin.athena.presentation.screens.settings.components.SettingType
-import com.kin.athena.presentation.screens.settings.components.SettingsBox
+import com.kin.athena.presentation.screens.settings.components.SectionBlock
+import com.kin.athena.presentation.screens.settings.components.SettingsScaffold
+import com.kin.athena.presentation.screens.settings.components.SettingSection
 import com.kin.athena.presentation.screens.settings.components.settingsContainer
 import com.kin.athena.presentation.screens.settings.viewModel.SettingsViewModel
 
@@ -53,27 +45,6 @@ fun SettingsScreen(
         onBackNavClicked = { navController.navigateUp() }
     ) {
 
-        if (!settings.settings.value.premiumUnlocked) {
-            item {
-                val context = LocalContext.current
-                val currentPrice = settings.getProductPrice("all_features")
-                val originalPrice = settings.calculateOriginalPrice(currentPrice)
-
-                SettingBoxSmall(
-                    title = stringResource(R.string.premium_lifetime),
-                    description = currentPrice?.let {
-                        stringResource(R.string.settings_support_dev, it)
-                    } ?: stringResource(R.string.settings_support_dev, "Loading..."),
-                    originalPrice = originalPrice,
-                    salePrice = null,
-                    onAction = {
-                        settings.startBilling("all_features") {
-                            settings.update(settings.settings.value.copy(premiumUnlocked = true))
-                        }
-                    }
-                )
-            }
-        }
         item {
             SectionBlock(
                 listOf(
@@ -160,7 +131,7 @@ fun SettingsScreen(
                         title = stringResource(id = R.string.about_title),
                         features = listOf(
                             stringResource(id = R.string.details_version),
-                            stringResource(id = R.string.settings_about_option_devs),
+                            stringResource(id = R.string.about_build_type),
                             stringResource(id = R.string.settings_license)
                         ),
                         icon = Icons.Rounded.Info,

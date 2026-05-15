@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2025-2026 Vexzure
+ * Copyright (C) 2026 Victoria Freeman
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +27,6 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.unit.dp
 import com.kin.athena.presentation.components.material.MaterialBar
 import com.kin.athena.presentation.components.material.MaterialScaffold
-import com.kin.athena.presentation.components.PremiumFeatureChoiceDialog
 import com.kin.athena.presentation.screens.settings.viewModel.SettingsViewModel
 
 @Composable
@@ -54,25 +54,4 @@ fun SettingsScaffold(
             }
         }
     )
-
-    // Premium feature choice dialog
-    if (settings.showFeatureChoiceDialog.value) {
-        settings.currentFeatureChoice.value?.let { choice ->
-            PremiumFeatureChoiceDialog(
-                featureName = choice.featureName,
-                featureDescription = choice.featureDescription,
-                singleFeaturePrice = settings.getProductPrice(choice.productId),
-                fullPremiumPrice = settings.getProductPrice("all_features"),
-                onSingleFeaturePurchase = {
-                    settings.purchaseSingleFeature()
-                },
-                onFullPremiumPurchase = {
-                    settings.purchaseFullPremium()
-                },
-                onDismiss = {
-                    settings.dismissFeatureChoiceDialog()
-                }
-            )
-        }
-    }
 }

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2025-2026 Vexzure
+ * Copyright (C) 2026 Victoria Freeman
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +84,6 @@ data class Settings(
     val trackerProtection: Boolean = false,
     val autoUpdateEnabled: Boolean = true,
     val autoUpdateInterval: Long = 24 * 60 * 60 * 1000L,
-    val premiumUnlocked: Boolean = false,
 
     val dontShowHelp: Boolean = false
 )

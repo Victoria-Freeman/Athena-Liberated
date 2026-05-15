@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2025-2026 Vexzure
+ * Copyright (C) 2026 Victoria Freeman
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,10 +33,10 @@ object Logger {
     private fun log(level: LogLevel, message: String, throwable: Throwable? = null) {
         if (currentLogLevel <= level) {
             when (level) {
-                LogLevel.DEBUG -> Log.d("Athena", "[ + ] $message", throwable)
-                LogLevel.INFO -> Log.i("Athena", "[ + ] $message", throwable)
-                LogLevel.WARN -> Log.w("Athena", "[ ! ] $message", throwable)
-                LogLevel.ERROR -> Log.e("Athena", "[ ! ] $message", throwable)
+                LogLevel.DEBUG -> Log.d("AthenaLiberated", "[ + ] $message", throwable)
+                LogLevel.INFO -> Log.i("AthenaLiberated", "[ + ] $message", throwable)
+                LogLevel.WARN -> Log.w("AthenaLiberated", "[ ! ] $message", throwable)
+                LogLevel.ERROR -> Log.e("AthenaLiberated", "[ ! ] $message", throwable)
             }
         }
     }

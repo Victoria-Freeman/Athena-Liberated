@@ -1,6 +1,0 @@
-- Network speed optimizations
-- Android 16 bug fixes
-- Pin/Unpin
-- Backup/Import
-- Accent Color
-- General Bug Fixes

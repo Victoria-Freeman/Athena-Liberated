@@ -8,7 +8,7 @@ assignees: ''
 
 ## Required Information
 
-- [ ] I’m using the latest Athena version
+- [ ] I’m using the latest Athena Liberated version
 
 - [ ] The device is rooted, and nothing has been removed via ADB
 
@@ -30,7 +30,7 @@ If applicable, add screenshots to help explain your problem.
 ### Smartphone Information
 - **Device:** [e.g. Nothing Phone 1]
 - **OS:** [e.g. Android 13]
-- **Athena Version:** [e.g. 1.2.5]
+- **Athena Liberated Version:** [e.g. 1.2.5]
 
 ## Additional Information (Optional)
 
